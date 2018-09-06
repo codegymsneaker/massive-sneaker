@@ -12,5 +12,5 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
 
     Iterable<Product> findAllByBrand(Brand brand);
 
-    Page<Product> findAllByNames(String name, Pageable pageable);
+    Page<Product> findAllByName(String name, Pageable pageable);
 }
