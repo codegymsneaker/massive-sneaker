@@ -17,7 +17,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("admin").password("root123").roles("ADMIN");
+        auth.inMemoryAuthentication().withUser("admin").password("12345").roles("ADMIN");
     }
 
     @Override
@@ -25,8 +25,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/admin").access("hasRole('ADMIN')")
-                .anyRequest().authenticated()
+//                .anyRequest().authenticated()
                 .and().formLogin().loginPage("/login")
+                .successHandler(customSuccessHandler)
                 .usernameParameter("username").passwordParameter("password")
                 .and().csrf()
                 .and().exceptionHandling().accessDeniedPage("/Access_Denied")
