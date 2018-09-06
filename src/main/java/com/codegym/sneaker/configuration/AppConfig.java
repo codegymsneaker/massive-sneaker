@@ -1,5 +1,7 @@
 package com.codegym.sneaker.configuration;
 
+import com.codegym.sneaker.service.ProductService;
+import com.codegym.sneaker.service.impl.ProductServiceImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
-import org.springframework.format.FormatterRegistry;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -40,7 +41,7 @@ import java.util.Properties;
 @EnableWebMvc
 @EnableTransactionManagement
 @PropertySource("classpath:database.properties")
-//@EnableJpaRepositories("com.codegym.sneaker.repository")
+@EnableJpaRepositories("com.codegym.sneaker.repository")
 @EnableSpringDataWebSupport
 public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
@@ -54,6 +55,11 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 
     @Value("${jdbc.password}")
     String password;
+
+    @Bean
+    public ProductService productService() {
+        return new ProductServiceImpl();
+    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
