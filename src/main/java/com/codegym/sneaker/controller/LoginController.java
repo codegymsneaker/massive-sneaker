@@ -34,7 +34,7 @@ public class LoginController {
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String adminPage(ModelMap model) {
         model.addAttribute("user", getPrincipal());
-        return "/manage-product";
+        return "redirect:/product";
     }
 
     @RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
