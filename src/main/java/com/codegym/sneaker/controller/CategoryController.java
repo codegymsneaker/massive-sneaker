@@ -1,6 +1,8 @@
 package com.codegym.sneaker.controller;
 
+import com.codegym.sneaker.model.Brand;
 import com.codegym.sneaker.model.Category;
+import com.codegym.sneaker.service.BrandService;
 import com.codegym.sneaker.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -79,4 +81,14 @@ public class CategoryController {
         categoryService.remove(category.getId());
         return "redirect:categories";
     }
+
+    //    Code them phan gan danh sach brand vao category
+
+    @Autowired
+    private BrandService brandService;
+    @ModelAttribute("brands")
+    public Iterable<Brand> brands() {
+        return brandService.findAll();
+    }
+
 }

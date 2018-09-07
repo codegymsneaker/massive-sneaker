@@ -13,8 +13,9 @@
 </a>
 <h1>Delete Form</h1>
 <form th:action="@{/delete-brand}" th:object="${brand}" method="post">
+    <div class="form">
     <input type="hidden" th:field="*{id}" name="id">
-    <table>
+    <table class="table table-hover">
         <tr>
             <th>Name</th>
             <td><input type="text" th:field="*{name}"></td>
@@ -24,6 +25,7 @@
             <td><input type="submit" value="Delete"></td>
         </tr>
     </table>
+    </div>
 </form>
 </div>
 </body>

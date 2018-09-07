@@ -1,5 +1,6 @@
 package com.codegym.sneaker.configuration;
 
+import com.codegym.sneaker.formatter.BrandFormatter;
 import com.codegym.sneaker.service.BrandService;
 import com.codegym.sneaker.service.CategoryService;
 import com.codegym.sneaker.service.ProductService;
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -150,7 +152,7 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resource/**").addResourceLocations("/resource/");
     }
-
+//{Nghiem} them bean 2 service category,brand
     @Bean
     public CategoryService categoryService() {
         return new CategoryServiceImpl();
@@ -159,5 +161,12 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     @Bean
     public BrandService brandService() {
         return new BrandServiceImpl();
+    }
+//
+//    Dang ky formatter
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addFormatter(new BrandFormatter(applicationContext.getBean(BrandService.class)));
     }
 }

@@ -62,4 +62,5 @@ public class Category {
     public void setBrands(Set<Brand> brands) {
         this.brands = brands;
     }
+
 }

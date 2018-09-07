@@ -49,11 +49,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-<<<<<<< HEAD:src/main/java/com/codegym/sneaker/service/ProductServiceImpl.java
-    public Page<Product> findAllByNames(String name, Pageable pageable) {
-=======
     public Page<Product> findAllByName(String name, Pageable pageable) {
->>>>>>> e56d4b163d1c28d36a7379077d679d70267d3bb0:src/main/java/com/codegym/sneaker/service/impl/ProductServiceImpl.java
         return productRepository.findAllByName(name, pageable);
     }
 }
