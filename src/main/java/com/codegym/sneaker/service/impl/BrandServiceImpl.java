@@ -1,7 +1,8 @@
-package com.codegym.sneaker.service;
+package com.codegym.sneaker.service.impl;
 
 import com.codegym.sneaker.model.Brand;
 import com.codegym.sneaker.repository.BrandRepository;
+import com.codegym.sneaker.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
