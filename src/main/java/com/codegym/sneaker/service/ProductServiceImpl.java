@@ -48,7 +48,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> findAllByNames(String name, Pageable pageable) {
-        return productRepository.findAllByNames(name, pageable);
+    public Page<Product> findAllByName(String name, Pageable pageable) {
+        return productRepository.findAllByName(name,pageable);
     }
+
 }
