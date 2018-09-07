@@ -26,12 +26,12 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public void save(Long id) {
+    public void remove(Long id) {
         categoryRepository.delete(id);
     }
 
-    @Override
-    public Page<Category> findAll(Pageable pageable) {
-        return categoryRepository.findAll(pageable);
-    }
+//    @Override
+//    public Page<Category> findAll(Pageable pageable) {
+//        return categoryRepository.findAll(pageable);
+//    }
 }

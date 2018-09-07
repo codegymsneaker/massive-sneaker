@@ -1,5 +1,9 @@
 package com.codegym.sneaker.configuration;
 
+import com.codegym.sneaker.service.BrandService;
+import com.codegym.sneaker.service.BrandServiceImpl;
+import com.codegym.sneaker.service.CategoryService;
+import com.codegym.sneaker.service.CategoryServiceImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,8 +43,8 @@ import java.util.Properties;
 @ComponentScan("com.codegym")
 @EnableWebMvc
 @EnableTransactionManagement
-//@PropertySource("classpath:database.properties")
-//@EnableJpaRepositories("com.codegym.sneaker.repository")
+@PropertySource("classpath:database.properties")
+@EnableJpaRepositories("com.codegym.sneaker.repository")
 @EnableSpringDataWebSupport
 public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
@@ -139,5 +143,15 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resource/**").addResourceLocations("/resource/");
+    }
+
+    @Bean
+    public CategoryService categoryService() {
+        return new CategoryServiceImpl();
+    }
+
+    @Bean
+    public BrandService brandService() {
+        return new BrandServiceImpl();
     }
 }
