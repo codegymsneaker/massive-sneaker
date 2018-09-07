@@ -20,4 +20,5 @@ public interface ProductService {
     Iterable<Product> findAllByBrand(Brand brand);
 
     Page<Product> findAllByName(String name, Pageable pageable);
+
 }
