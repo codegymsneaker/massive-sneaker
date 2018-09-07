@@ -1,6 +1,13 @@
 package com.codegym.sneaker.configuration;
 
+import com.codegym.sneaker.formatter.BrandFormatter;
+import com.codegym.sneaker.formatter.CategoryFormatter;
+import com.codegym.sneaker.model.Category;
+import com.codegym.sneaker.service.BrandService;
+import com.codegym.sneaker.service.CategoryService;
 import com.codegym.sneaker.service.ProductService;
+import com.codegym.sneaker.service.impl.BrandServiceImpl;
+import com.codegym.sneaker.service.impl.CategoryServiceImpl;
 import com.codegym.sneaker.service.impl.ProductServiceImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,6 +20,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -60,6 +68,23 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     public ProductService productService() {
         return new ProductServiceImpl();
     }
+
+    @Bean
+    public CategoryService categoryService() {
+        return new CategoryServiceImpl();
+    }
+
+    @Bean
+    public BrandService brandService() {
+        return new BrandServiceImpl();
+    }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addFormatter(new CategoryFormatter(applicationContext.getBean(CategoryService.class)));
+        registry.addFormatter(new BrandFormatter(applicationContext.getBean(BrandService.class)));
+    }
+
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
