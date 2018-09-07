@@ -13,27 +13,15 @@ public class Category {
     private Long id;
     private String name;
 
-    @OneToMany(targetEntity = Product.class)
-    private List<Product> products;
-
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(name = "category_brand", joinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "brand_id", referencedColumnName = "id"))
-//    private Set<Brand> brands;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "category_brand",
-            joinColumns = { @JoinColumn(name = "category_id") },
-            inverseJoinColumns = { @JoinColumn(name = "brand_id") })
-    private Set<Brand> brands = new HashSet<Brand>();
+    @ManyToMany(mappedBy = "product")
+    private Set<Product> products;
 
     public Category() {
     }
 
-    public Category(String name, List<Product> products, Set<Brand> brands) {
+    public Category(String name, Set<Product> products) {
         this.name = name;
         this.products = products;
-        this.brands = brands;
     }
 
     public Long getId() {
@@ -52,20 +40,11 @@ public class Category {
         this.name = name;
     }
 
-    public List<Product> getProducts() {
+    public Set<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(Set<Product> products) {
         this.products = products;
     }
-
-    public Set<Brand> getBrands() {
-        return brands;
-    }
-
-    public void setBrands(Set<Brand> brands) {
-        this.brands = brands;
-    }
-
 }

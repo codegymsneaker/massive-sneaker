@@ -15,18 +15,13 @@ public class Brand {
     @OneToMany(targetEntity = Product.class)
     private List<Product> products;
 
-    @ManyToMany(mappedBy = "brands")
-    private Set<Category> categories;
-
 
     public Brand() {
-
     }
 
-    public Brand(String name, List<Product> products, Set<Category> categories) {
+    public Brand(String name, List<Product> products) {
         this.name = name;
         this.products = products;
-        this.categories = categories;
     }
 
     public Long getId() {
@@ -53,11 +48,4 @@ public class Brand {
         this.products = products;
     }
 
-    public Set<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(Set<Category> categories) {
-        this.categories = categories;
-    }
 }
