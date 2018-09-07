@@ -1,6 +1,8 @@
 package com.codegym.sneaker.configuration;
 
 import com.codegym.sneaker.formatter.BrandFormatter;
+import com.codegym.sneaker.formatter.CategoryFormatter;
+import com.codegym.sneaker.model.Category;
 import com.codegym.sneaker.service.BrandService;
 import com.codegym.sneaker.service.CategoryService;
 import com.codegym.sneaker.service.ProductService;
@@ -66,6 +68,16 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     public ProductService productService() {
         return new ProductServiceImpl();
     }
+
+
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addFormatter(new CategoryFormatter(applicationContext.getBean(CategoryService.class)));
+        registry.addFormatter(new BrandFormatter(applicationContext.getBean(BrandService.class)));
+
+    }
+
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -163,10 +175,5 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         return new BrandServiceImpl();
     }
 //
-//    Dang ky formatter
 
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addFormatter(new BrandFormatter(applicationContext.getBean(BrandService.class)));
-    }
 }

@@ -3,6 +3,7 @@ package com.codegym.sneaker.controller;
 import com.codegym.sneaker.model.Brand;
 import com.codegym.sneaker.model.Category;
 import com.codegym.sneaker.service.BrandService;
+import com.codegym.sneaker.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -79,6 +80,13 @@ public class BrandController {
     public String deleteBrand(@ModelAttribute("brand") Brand brand) {
         brandService.remove(brand.getId());
         return "redirect:brands";
+    }
+
+    @Autowired
+    private CategoryService categoryService;
+    @ModelAttribute("categories")
+    public Iterable<Category> categories() {
+        return categoryService.findAll();
     }
 
 

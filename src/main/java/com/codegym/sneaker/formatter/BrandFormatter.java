@@ -15,7 +15,7 @@ public class BrandFormatter implements Formatter<Brand> {
 
     @Autowired
     public BrandFormatter(BrandService brandService) {
-        this.brandService =  brandService;
+        this.brandService = brandService;
     }
 
     @Override
@@ -25,6 +25,6 @@ public class BrandFormatter implements Formatter<Brand> {
 
     @Override
     public String print(Brand object, Locale locale) {
-        return "[" + object.getId() + "," + object.getName() + "]";
+        return "[" + object.getId() + object.getName() + "]";
     }
 }
