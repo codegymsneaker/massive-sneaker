@@ -1,12 +1,13 @@
-package com.codegym.sneaker.service;
+package com.codegym.sneaker.service.impl;
 
 import com.codegym.sneaker.model.Category;
 import com.codegym.sneaker.repository.CategoryRepository;
+import com.codegym.sneaker.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public class CategoryServiceImpl implements CategoryService{
+public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
@@ -26,12 +27,12 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public void save(Long id) {
+    public void remove(Long id) {
         categoryRepository.delete(id);
     }
 
-    @Override
-    public Page<Category> findAll(Pageable pageable) {
-        return categoryRepository.findAll(pageable);
-    }
+//    @Override
+//    public Page<Category> findAll(Pageable pageable) {
+//        return categoryRepository.findAll(pageable);
+//    }
 }

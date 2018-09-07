@@ -21,5 +21,5 @@ public interface ProductService {
 
     Iterable<Product> findAllByBrand(Brand brand);
 
-    Page<Product> findAllByName(String s, Pageable pageable);
+    Page<Product> findAllByName(String name, Pageable pageable);
 }

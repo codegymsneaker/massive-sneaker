@@ -12,6 +12,7 @@ public class Product {
     private double price;
     private int quantity;
     private String code;
+    private int size;
     private String image;
 
     @ManyToOne
@@ -84,5 +85,13 @@ public class Product {
 
     public void setBrand(Brand brand) {
         this.brand = brand;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 }

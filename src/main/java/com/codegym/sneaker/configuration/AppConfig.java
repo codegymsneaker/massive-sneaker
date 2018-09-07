@@ -1,7 +1,15 @@
 package com.codegym.sneaker.configuration;
 
 import com.codegym.sneaker.service.ProductService;
-import com.codegym.sneaker.service.ProductServiceImpl;
+import com.codegym.sneaker.formatter.BrandFormatter;
+import com.codegym.sneaker.formatter.CategoryFormatter;
+import com.codegym.sneaker.model.Category;
+import com.codegym.sneaker.service.BrandService;
+import com.codegym.sneaker.service.CategoryService;
+import com.codegym.sneaker.service.ProductService;
+import com.codegym.sneaker.service.impl.BrandServiceImpl;
+import com.codegym.sneaker.service.impl.CategoryServiceImpl;
+import com.codegym.sneaker.service.impl.ProductServiceImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,6 +69,14 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     public ProductService productService() {
         return new ProductServiceImpl();
     }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addFormatter(new CategoryFormatter(applicationContext.getBean(CategoryService.class)));
+        registry.addFormatter(new BrandFormatter(applicationContext.getBean(BrandService.class)));
+
+    }
+
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -147,4 +163,16 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resource/**").addResourceLocations("/resource/");
     }
+//{Nghiem} them bean 2 service category,brand
+    @Bean
+    public CategoryService categoryService() {
+        return new CategoryServiceImpl();
+    }
+
+    @Bean
+    public BrandService brandService() {
+        return new BrandServiceImpl();
+    }
+//
+
 }
