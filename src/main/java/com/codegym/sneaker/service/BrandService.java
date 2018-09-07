@@ -5,13 +5,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface BrandService {
-    Iterable<Brand> findAll();
+    Page<Brand> findAll(Pageable pageable);
 
     Brand findById(Long id);
 
     void save(Brand brand);
 
     void remove(Long id);
-
-    Page<Brand> findAll(Pageable pageable);
 }

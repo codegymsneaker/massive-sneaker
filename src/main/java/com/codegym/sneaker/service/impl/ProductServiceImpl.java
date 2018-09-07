@@ -14,8 +14,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Override
-    public Iterable<Product> findAll() {
-        return productRepository.findAll();
+    public Page<Product> findAll(Pageable pageable) {
+        return productRepository.findAll(pageable);
     }
 
     @Override
@@ -31,11 +31,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void remove(Long id) {
         productRepository.delete(id);
-    }
-
-    @Override
-    public Page<Product> findAll(Pageable pageable) {
-        return productRepository.findAll(pageable);
     }
 
     @Override
