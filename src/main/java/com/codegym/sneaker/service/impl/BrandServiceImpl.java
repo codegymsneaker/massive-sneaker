@@ -12,8 +12,8 @@ public class BrandServiceImpl implements BrandService {
     private BrandRepository brandRepository;
 
     @Override
-    public Page<Brand> findAll(Pageable pageable) {
-        return brandRepository.findAll(pageable);
+    public Iterable<Brand> findAll() {
+        return brandRepository.findAll();
     }
 
     @Override
@@ -29,5 +29,10 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public void remove(Long id) {
         brandRepository.delete(id);
+    }
+
+    @Override
+    public Page<Brand> findAll(Pageable pageable) {
+        return brandRepository.findAll(pageable);
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface ProductService {
-    Page<Product> findAll(Pageable pageable);
+    Iterable<Product> findAll();
 
     Product findById(Long id);
 
@@ -15,10 +15,11 @@ public interface ProductService {
 
     void remove(Long id);
 
+    Page<Product> findAll(Pageable pageable);
+
     Iterable<Product> findAllByCategory(Category category);
 
     Iterable<Product> findAllByBrand(Brand brand);
 
     Page<Product> findAllByName(String name, Pageable pageable);
-
 }
