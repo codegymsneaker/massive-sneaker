@@ -12,7 +12,9 @@ public class Category implements Serializable {
     private Long id;
     private String name;
 
-    @ManyToMany(mappedBy = "product")
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            mappedBy = "categories")
     private List<Product> products;
 
     public Category() {
@@ -20,7 +22,6 @@ public class Category implements Serializable {
 
     public Category(String name) {
         this.name = name;
-
     }
 
     public Long getId() {
