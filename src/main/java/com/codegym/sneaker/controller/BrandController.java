@@ -21,7 +21,7 @@ public class BrandController {
     private CategoryService categoryService;
 
     @ModelAttribute("categories")
-    Iterable<Category> categories() {
+    public Iterable<Category> categories() {
         return categoryService.findAll();
     }
 
