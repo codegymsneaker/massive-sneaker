@@ -69,35 +69,23 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         return new ProductServiceImpl();
     }
 
-    @Bean
-    public CategoryService categoryService() {
-        return new CategoryServiceImpl();
-    }
-
-    @Bean
-    public BrandService brandService() {
-        return new BrandServiceImpl();
-    }
-
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addFormatter(new CategoryFormatter(applicationContext.getBean(CategoryService.class)));
         registry.addFormatter(new BrandFormatter(applicationContext.getBean(BrandService.class)));
-    }
 
+    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
 
-
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         return bCryptPasswordEncoder;
     }
-
 
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
@@ -170,5 +158,15 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resource/**").addResourceLocations("/resource/");
+    }
+
+    @Bean
+    public CategoryService categoryService() {
+        return new CategoryServiceImpl();
+    }
+
+    @Bean
+    public BrandService brandService() {
+        return new BrandServiceImpl();
     }
 }

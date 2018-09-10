@@ -1,6 +1,7 @@
 package com.codegym.sneaker.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -19,8 +20,6 @@ public class Category {
     @JoinTable(name = "category_brand", joinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "brand_id", referencedColumnName = "id"))
     private Set<Brand> brands;
-
-
 
     public Category() {
     }

@@ -12,6 +12,4 @@ public interface BrandService {
     void save(Brand brand);
 
     void remove(Long id);
-
-    Page<Brand> findAll(Pageable pageable);
 }
