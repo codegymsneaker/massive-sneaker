@@ -25,6 +25,10 @@ public class LoginController {
         return userName;
     }
 
+    @GetMapping("/")
+    public String home() {
+        return "home";
+    }
     @GetMapping(value = {"/administrator"})
     public String homePage(Model model) {
         model.addAttribute("user", getPrincipal());
