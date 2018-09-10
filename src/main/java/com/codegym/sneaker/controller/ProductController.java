@@ -21,15 +21,14 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
-//import com.codegym.sneaker.model.Detail;
-//import com.codegym.sneaker.service.DetailService;
-
 @Controller
 public class ProductController {
     @Autowired
     private ProductService productService;
+
     @Autowired
     private CategoryService categoryService;
+
     @Autowired
     private BrandService brandService;
 

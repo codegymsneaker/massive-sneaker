@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>Product Code</th>
+        <td th:text="${products.code}"></td>
+    </tr>
+    <tr>
+        <th>Name</th>
+        <td th:text="${products.name}"></td>
+    </tr>
+    <tr>
+        <th>Size</th>
+        <td th:text="${products.size}"></td>
+    </tr>
+    <tr>
+        <th>Stock</th>
+        <td th:text="${products.quantity}"></td>
+    </tr>
+    <tr>
+        <th>Thumbnail</th>
+        <td th:text="${products.image}"></td>
+    </tr>
+    <tr>
+        <th>Price</th>
+        <td th:text="${products.price}"></td>
+    </tr>
+    <tr>
+        <td>Name Category</td>
+        <td>
+            <span th:each="category : ${categories}" th:text="${category.name}"></span>
+        </td>
+    </tr>
+    <tr>
+        <td>Name Brand</td>
+        <td th:text="${products.brand.name}"></td>
+    </tr>
+</table>
+</body>
+</html>

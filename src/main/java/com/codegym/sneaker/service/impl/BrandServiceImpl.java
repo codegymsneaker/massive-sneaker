@@ -31,8 +31,4 @@ public class BrandServiceImpl implements BrandService {
         brandRepository.delete(id);
     }
 
-    @Override
-    public Page<Brand> findAll(Pageable pageable) {
-        return brandRepository.findAll(pageable);
-    }
 }

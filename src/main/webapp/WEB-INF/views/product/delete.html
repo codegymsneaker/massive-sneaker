@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/delete/product}" method="post" th:object="${product}">
+    <input type="hidden" th:field="*{id}">
+    <table>
+        <tr>
+            <th>Product Code</th>
+            <td th:text="${product.code}"></td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td th:text="${product.name}"></td>
+        </tr>
+        <tr>
+            <th>Size</th>
+            <td th:text="${product.size}"></td>
+        </tr>
+        <tr>
+            <th>Stock</th>
+            <td th:text="${product.quantity}"></td>
+        </tr>
+        <tr>
+            <th>Thumbnail</th>
+            <td th:text="${product.image}"></td>
+        </tr>
+        <tr>
+            <th>Price</th>
+            <td th:text="${product.price}"></td>
+        </tr>
+        <tr>
+            <th>Name Category</th>
+            <td th:text="${product.category.name}"></td>
+        </tr>
+        <tr>
+            <td>Name Brand</td>
+            <td th:text="${product.brand.name}"></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="delete product"></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

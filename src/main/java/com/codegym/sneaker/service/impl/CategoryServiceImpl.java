@@ -31,8 +31,4 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.delete(id);
     }
 
-//    @Override
-//    public Page<Category> findAll(Pageable pageable) {
-//        return categoryRepository.findAll(pageable);
-//    }
 }
