@@ -1,27 +1,26 @@
 package com.codegym.sneaker.model;
 
 import javax.persistence.*;
-import java.util.HashSet;
+import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "category")
-public class Category {
+public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
 
     @ManyToMany(mappedBy = "product")
-    private Set<Product> products;
+    private List<Product> products;
 
     public Category() {
     }
 
-    public Category(String name, Set<Product> products) {
+    public Category(String name) {
         this.name = name;
-        this.products = products;
+
     }
 
     public Long getId() {
@@ -40,11 +39,11 @@ public class Category {
         this.name = name;
     }
 
-    public Set<Product> getProducts() {
+    public List<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(Set<Product> products) {
+    public void setProducts(List<Product> products) {
         this.products = products;
     }
 }

@@ -1,11 +1,15 @@
 package com.codegym.sneaker.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.*;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.List;
+
 
 @Entity
 @Table(name = "product")
-public class Product {
+public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -20,7 +24,7 @@ public class Product {
     @JoinTable(name = "product_category",
             joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"))
-    private Set<Category> categories;
+    private List<Category> categories;
 
     @ManyToOne
     @JoinColumn(name = "brand_id")
@@ -74,11 +78,11 @@ public class Product {
         this.image = image;
     }
 
-    public Set<Category> getCategories() {
+    public List<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(Set<Category> categories) {
+    public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
 
