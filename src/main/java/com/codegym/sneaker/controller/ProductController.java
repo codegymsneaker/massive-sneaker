@@ -3,9 +3,11 @@ package com.codegym.sneaker.controller;
 import com.codegym.sneaker.model.Brand;
 import com.codegym.sneaker.model.Category;
 import com.codegym.sneaker.model.Product;
+import com.codegym.sneaker.model.ProductForm;
 import com.codegym.sneaker.service.BrandService;
 import com.codegym.sneaker.service.CategoryService;
 import com.codegym.sneaker.service.ProductService;
+import com.codegym.sneaker.utils.StorageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +16,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
+
+//import com.codegym.sneaker.model.Detail;
+//import com.codegym.sneaker.service.DetailService;
 
 @Controller
 public class ProductController {
@@ -24,6 +32,7 @@ public class ProductController {
     private CategoryService categoryService;
     @Autowired
     private BrandService brandService;
+
 
     @ModelAttribute("categories")
     public Iterable<Category> categories() {
@@ -44,8 +53,7 @@ public class ProductController {
         } else {
             products = productService.findAll(pageable);
         }
-
-        ModelAndView modelAndView = new ModelAndView("product/manage-product");
+        ModelAndView modelAndView = new ModelAndView("product/list");
         modelAndView.addObject("products", products);
         return modelAndView;
     }
@@ -53,19 +61,41 @@ public class ProductController {
     @GetMapping("/products/create")
     public ModelAndView showCreateProductForm() {
         ModelAndView modelAndView = new ModelAndView("/product/create");
-        modelAndView.addObject("product", new Product());
-        modelAndView.addObject("message", "create product successfully");
+        modelAndView.addObject("productForm", new ProductForm());
+//        modelAndView.addObject("message", "create product successfully");
         return modelAndView;
     }
 
     @PostMapping("/products/create")
-    public String saveProduct(
-            @ModelAttribute("product") Product product,
+    public ModelAndView saveProduct(
+            @ModelAttribute("productForm") ProductForm productForm,
             RedirectAttributes redirectAttributes
     ) {
-        productService.save(product);
-        redirectAttributes.addFlashAttribute("message", "New create product successfully");
-        return "redirect:/product";
+        ModelAndView modelAndView = new ModelAndView("/product/create");
+        try {
+            String randomCode = UUID.randomUUID().toString();
+            String originFileName = productForm.getImage().getOriginalFilename();
+            String randomName = randomCode + StorageUtils.getFileExtension(originFileName);
+            productForm.getImage().transferTo(new File(StorageUtils.FEATURE_LOCATION + "/" + randomName));
+
+            Product product = new Product();
+            product.setCode(productForm.getCode());
+            product.setName(productForm.getName());
+            product.setSize(productForm.getSize());
+            product.setQuantity(productForm.getQuantity());
+            product.setImage(randomName);
+            productService.save(product);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+//        productService.save(product);
+//        redirectAttributes.addFlashAttribute("message", "New create product successfully");
+//        return "redirect:/product";
+        modelAndView.addObject("formPost", new ProductForm());
+        modelAndView.addObject("message", "create blog successfully");
+        return modelAndView;
     }
 
     @GetMapping("/products/edit/{id}")

@@ -2,14 +2,17 @@ package com.codegym.sneaker.configuration;
 
 import com.codegym.sneaker.formatter.BrandFormatter;
 import com.codegym.sneaker.formatter.CategoryFormatter;
-import com.codegym.sneaker.model.Category;
+
+import com.codegym.sneaker.formatter.ProductFormatter;
 import com.codegym.sneaker.service.BrandService;
 import com.codegym.sneaker.service.CategoryService;
 import com.codegym.sneaker.service.ProductService;
 import com.codegym.sneaker.service.impl.BrandServiceImpl;
 import com.codegym.sneaker.service.impl.CategoryServiceImpl;
 import com.codegym.sneaker.service.impl.ProductServiceImpl;
+import com.codegym.sneaker.utils.StorageUtils;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -18,6 +21,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.FormatterRegistry;
@@ -29,6 +33,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -44,12 +49,13 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+
 @Configuration
-@ComponentScan("com.codegym")
 @EnableWebMvc
 @EnableTransactionManagement
-@PropertySource("classpath:database.properties")
+@ComponentScan("com.codegym.sneaker")
 @EnableJpaRepositories("com.codegym.sneaker.repository")
+@PropertySource("classpath:database.properties")
 @EnableSpringDataWebSupport
 public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
@@ -69,13 +75,19 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         return new ProductServiceImpl();
     }
 
+    private Environment environment;
+
+    @Autowired
+    public AppConfig(Environment environment) {
+        this.environment = environment;
+    }
 
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addFormatter(new CategoryFormatter(applicationContext.getBean(CategoryService.class)));
         registry.addFormatter(new BrandFormatter(applicationContext.getBean(BrandService.class)));
-
+        registry.addFormatter(new ProductFormatter(applicationContext.getBean(ProductService.class)));
     }
 
 
@@ -162,9 +174,22 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resource/**").addResourceLocations("/resource/");
+        registry
+                .addResourceHandler("/resource/**")
+                .addResourceLocations("/resource/");
+        registry
+                .addResourceHandler("/features/**")
+                .addResourceLocations("file:" + StorageUtils.FEATURE_LOCATION + "/");
     }
-//{Nghiem} them bean 2 service category,brand
+
+    @Bean
+    public CommonsMultipartResolver multipartResolver(){
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setMaxUploadSizePerFile(10000000);
+        return multipartResolver;
+    }
+
+    //{Nghiem} them bean 2 service category,brand
     @Bean
     public CategoryService categoryService() {
         return new CategoryServiceImpl();
@@ -174,6 +199,6 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     public BrandService brandService() {
         return new BrandServiceImpl();
     }
-//
+
 
 }
