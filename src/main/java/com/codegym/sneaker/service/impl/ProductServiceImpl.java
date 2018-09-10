@@ -14,11 +14,6 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Override
-    public Iterable<Product> findAll() {
-        return productRepository.findAll();
-    }
-
-    @Override
     public Product findById(Long id) {
         return productRepository.findOne(id);
     }
