@@ -9,11 +9,13 @@ import com.codegym.sneaker.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.awt.*;
 import java.util.Optional;
 
 @Controller
@@ -93,29 +95,11 @@ public class ProductController {
         return "redirect:/product";
     }
 
-    @GetMapping("/products/delete/{id}")
-    public ModelAndView showDeleteProductForm(
-            @PathVariable("id") Long id
-    ) {
-        Product product = productService.findById(id);
-        if (product != null) {
-            ModelAndView modelAndView = new ModelAndView("/product/delete");
-            modelAndView.addObject("product", product);
-            return modelAndView;
-        } else {
-            ModelAndView modelAndView = new ModelAndView("/product/error-404");
-            return modelAndView;
-        }
-    }
+    @RequestMapping(value = "/products/delete{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 
-    @PostMapping("/delete/product")
-    public String removeProduct(
-            @ModelAttribute("product") Product product,
-            RedirectAttributes redirectAttributes
-    ) {
-        productService.remove(product.getId());
-        redirectAttributes.addFlashAttribute("message", "remove product successfully");
-        return "redirect:/product";
+    @ResponseBody
+    public void deleteProduct(@PathVariable Long id) {
+        productService.remove(id);
     }
 
     @GetMapping("/products/view/{id}")
@@ -132,4 +116,12 @@ public class ProductController {
             return modelAndView;
         }
     }
+
+//    @RequestMapping("/search")
+//    public @ResponseBody List searchPost(@RequestParameter("term") String query) {
+//
+//        List<Object> retVal = getListOfObjectFromDbBasedOnQuery(query);
+//
+//        return retVal;
+//    }
 }
