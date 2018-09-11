@@ -18,6 +18,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -52,6 +54,9 @@ public class ProductController {
         } else {
             products = productService.findAll(pageable);
         }
+        for (Product product : products) {
+            product.getCategories();
+        }
         ModelAndView modelAndView = new ModelAndView("product/list");
         modelAndView.addObject("products", products);
         return modelAndView;
@@ -61,7 +66,6 @@ public class ProductController {
     public ModelAndView showCreateProductForm() {
         ModelAndView modelAndView = new ModelAndView("/product/create");
         modelAndView.addObject("productForm", new ProductForm());
-//        modelAndView.addObject("message", "create product successfully");
         return modelAndView;
     }
 
@@ -82,6 +86,10 @@ public class ProductController {
             product.setName(productForm.getName());
             product.setSize(productForm.getSize());
             product.setQuantity(productForm.getQuantity());
+            product.setBrand(productForm.getBrand());
+            product.setPrice(productForm.getPrice());
+
+            product.setCategories(product.getCategories());
             product.setImage(randomName);
             productService.save(product);
 

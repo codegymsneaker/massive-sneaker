@@ -46,16 +46,18 @@
         <tbody>
         <th:block th:each="sneaker : ${products}">
             <tr>
-                <td th:text="${sneaker.code}"></td>
-                <td th:text="${sneaker.name}"></td>
-                <td th:text="${sneaker.size}"></td>
-                <td th:text="${sneaker.quantity}"></td>
+                <td th:text="*{sneaker.code}"></td>
+                <td th:text="*{sneaker.name}"></td>
+                <td th:text="*{sneaker.size}"></td>
+                <td th:text="*{sneaker.quantity}"></td>
                 <td>
                     <img th:src="@{/features/__${sneaker.image}__}">
                 </td>
-                <td th:text="${sneaker.price}"></td>
-                <td th:text="${sneaker.brand.name}"></td>
-                <!--<td th:text="${sneaker.details.}"></td>-->
+                <td th:text="*{sneaker.price}"></td>
+                <td th:text="*{sneaker.brand.name}"></td>
+                <td>
+                    <span th:each="categorie: *{sneaker.categories}" th:text="*{categorie.name+',&nbsp;'}"></span>
+                </td>
                 <td>
                     <a th:href="@{/products/edit/__${sneaker.id}__}" title="Edit">
                         <span class="glyphicon glyphicon-pencil">Edit</span>
@@ -69,7 +71,6 @@
                 </td>
             </tr>
         </th:block>
-
         </tr>
         </tbody>
     </table>

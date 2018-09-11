@@ -5,7 +5,11 @@ import com.codegym.sneaker.model.Category;
 import com.codegym.sneaker.model.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Service
+@Transactional
 public interface ProductService {
     Product findById(Long id);
 

@@ -6,6 +6,7 @@ import com.codegym.sneaker.model.Product;
 import com.codegym.sneaker.repository.CategoryRepository;
 import com.codegym.sneaker.repository.ProductRepository;
 import com.codegym.sneaker.service.ProductService;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +35,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> findAll(Pageable pageable) {
-        return productRepository.findAll(pageable);
+        Page<Product> products = productRepository.findAll(pageable);
+        products.forEach(product -> Hibernate.initialize(product.getCategories()));
+        return products;
     }
 
     @Override
