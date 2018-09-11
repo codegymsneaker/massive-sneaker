@@ -8,6 +8,8 @@ import com.codegym.sneaker.service.BrandService;
 import com.codegym.sneaker.service.CategoryService;
 import com.codegym.sneaker.service.ProductService;
 import com.codegym.sneaker.utils.StorageUtils;
+import org.hibernate.Hibernate;
+import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,10 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 public class ProductController {
@@ -45,7 +44,7 @@ public class ProductController {
         return brandService.findAll();
     }
 
-    @GetMapping("/product")
+    @GetMapping("/products")
     public ModelAndView listProduct(
             @RequestParam("s") Optional<String> s, Pageable pageable) {
         Page<Product> products;
@@ -89,7 +88,8 @@ public class ProductController {
             product.setBrand(productForm.getBrand());
             product.setPrice(productForm.getPrice());
 
-            product.setCategories(product.getCategories());
+            product.setCategories(productForm.getCategories());
+
             product.setImage(randomName);
             productService.save(product);
 

@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
@@ -25,6 +28,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void save(Product product) {
+
+        List<Category> categories = new ArrayList<>();
+        for (Category category : product.getCategories()) {
+            categories.add(categoryRepository.findOne(category.getId()));
+        }
+        product.setCategories(categories);
+
         productRepository.save(product);
     }
 
