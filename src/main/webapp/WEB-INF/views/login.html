@@ -9,98 +9,108 @@
     <script src="/resource/bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>
     <title>Sneaker-ism</title>
     <style>
-        #login-form {;
-            background-color: black;
-            background-size: cover;
-            padding: 10px;
+        #login-block {
+            background: #DE6262;
+            background: -webkit-linear-gradient(to bottom, #FFB88C, #DE6262);
+            background: linear-gradient(to bottom, #FFB88C, #DE6262);
+            float:left;
+            width:100%;
+            padding : 150px;
         }
-
-        .panel h2 {
-            color: #444444;
-            margin: 0 0 8px 0;
+        .container{
+            background: #DE6262;
+            background: -webkit-linear-gradient(to bottom, #FFB88C, #DE6262);
+            background: linear-gradient(to bottom, #FFB88C, #DE6262);
+            float:left;
+            width:100%;
+            /*padding : 50px 50px 50px 50px;*/
         }
-
-        .panel p {
-            color: #777777;
-            font-size: 20px;
-            margin-bottom: 30px;
-            line-height: 24px;
-        }
-
-        .main-div {
-            background: #ffffff;
-            border-radius: 2px;
-            margin: 10px auto 30px;
-            padding: 50px 70px 70px 71px;
-        }
-
-        .login-form .form-group {
-            margin-bottom: 10px;
-        }
-
-        .login-form {
-            text-align: center;
-        }
-
-        .login-form .btn.btn-primary {
-            background: #f0ad4e;
-            border-color: #f0ad4e;
-            color: #ffffff;
-            font-size: 14px;
-            width: 100%;
-            height: 50px;
-            line-height: 50px;
-            padding: 0;
-        }
-
-        input{
-            width: 100%;
-            padding: 12px 0;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
+        .container{
+            background:#fff;
+            border-radius: 10px;
+            box-shadow:15px 20px 0px rgba(0,0,0,0.1);}
+        .login-sec{padding: 50px 30px; position:relative;}
+        .login-sec .copy-text{position:absolute; width:80%; bottom:20px; font-size:13px; text-align:center;}
+        .login-sec .copy-text i{color:#FEB58A;}
+        .login-sec .copy-text a{color:#E36262;}
+        .login-sec h2{margin-bottom:30px; font-weight:800; font-size:30px; color: #DE6262;}
+        .login-sec h2:after{content:" "; width:100px; height:5px; background:#FEB58A; display:block; margin-top:20px; border-radius:3px; margin-left:auto;margin-right:auto}
+        .btn-login{background: #DE6262; color:#fff; font-weight:600;}
+        .banner-text h2{color:#fff; font-weight:600;}
+        .banner-text h2:after{content:" "; width:100px; height:5px; background:#FFF; display:block; margin-top:20px; border-radius:3px;}
+        .banner-text p{color:#fff;}
+        .error {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
             border-radius: 4px;
-            box-sizing: border-box;
+            color: #a94442;
+            background-color: #f2dede;
+            border-color: #ebccd1;
         }
 
-        form {
-            width: 500px;
-            margin: 15px auto;
-            border-radius: 5px;
-            background-color: #f2f2f2;
-            padding: 20px;
+        .msg {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            color: #31708f;
+            background-color: #d9edf7;
+            border: 1px solid #bce8f1;
+        }
+
+        #logo {
+            width: 450px;
+            margin: auto;
         }
 
     </style>
 </head>
-<body id="login-form">
-<div class="container">
-    <div class="login-form">
-        <div class="main-div">
-            <div class="panel">
-                <h2>Admin Login</h2>
-                <p>Please login to gain access as administrator</p>
-            </div>
-            <div th:if="${param.error}">
-                <p style="color: red">Invalid name or password. Please try again.</p>
-
-            </div>
-            <div th:if="${param.logout}">
-                <h1 style="color: blue">Logged out.</h1>
-            </div>
-            <form id="Login" th:action="@{/login}" method="POST">
-                <div class="form-group">
-                    <input type="text" class="form-control" name="username" placeholder="Username">
+<body>
+<div id="login-block">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 banner-sec">
+                <div id="logo">
+                <a href="/"> <img src="resource/image/background.jpg"></a>
                 </div>
+            </div>
+            <div class="col-lg-4 login-sec">
+                <div class="login-form">
+                    <div class="panel">
+                        <h2>Admin Login</h2>
+                        <p>Please login to gain access as administrator</p>
+                    </div>
+                    <form id="Login" th:action="@{/login}" method="POST">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="username" placeholder="Username">
+                        </div>
 
-                <div class="form-group">
-                    <input type="password" class="form-control" name="password" placeholder="Password">
+                        <div class="form-group">
+                            <input type="password" class="form-control" name="password" placeholder="Password">
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input">
+                                <small>Remember Me</small>
+                            </label>
+                            <button type="submit" class="btn btn-primary btn-sm">Login</button>
+                        </div>
+                    </form>
+                    <div class="copy-text">&trade; SNEAKER-ISM 2018</div>
+                    <div th:if="${param.error}">
+                        <div class="error">Invalid name or password, please try again.
+                        </div>
+                    </div>
+                    <div th:if="${param.logout}">
+                        <div class="msg">
+                        Your account has been logged out
+                        </div>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-sm">Login</button>
-            </form>
+            </div>
+        </div>
         </div>
     </div>
 </div>
-<footer th:replace="layout :: footer"></footer>
 </body>
 </html>
