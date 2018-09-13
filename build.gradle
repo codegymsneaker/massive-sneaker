@@ -25,4 +25,5 @@ dependencies {
     compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity4', version: '3.0.2.RELEASE'
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.11'
     compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '1.11.12.RELEASE'
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '4.2.0.Final'
 }
