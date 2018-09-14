@@ -13,25 +13,28 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    CustomSuccessHandler customSuccessHandler;
+    private CustomAuthenticationProvider authProvider;
 
     @Autowired
-    public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("admin").password("12345").roles("ADMIN");
-    }
+    CustomSuccessHandler customSuccessHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/admin").access("hasRole('ADMIN')")
-//                .anyRequest().authenticated()
-                .and().formLogin().loginPage("/login")
+        http.authorizeRequests().antMatchers("/", "/home","/products/detail/**","/user/registration", "/resource/**").permitAll()
+                .antMatchers("/user/**","/product/**").access("hasRole('USER')")
+                .antMatchers("/admin/**","/manage/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+                .and().formLogin().loginPage("/login").permitAll()
                 .successHandler(customSuccessHandler)
-                .usernameParameter("username").passwordParameter("password")
+                .usernameParameter("email").passwordParameter("password")
                 .and().csrf()
-                .and().exceptionHandling().accessDeniedPage("/Access_Denied")
+                .and().exceptionHandling().accessDeniedPage("/access_denied")
                 .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
-        http.exceptionHandling().accessDeniedPage("/403");
+        http.exceptionHandling().accessDeniedPage("/access_denied");
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authProvider);
     }
 }

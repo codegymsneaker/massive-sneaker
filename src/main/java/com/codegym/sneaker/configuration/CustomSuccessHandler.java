@@ -8,6 +8,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -23,12 +24,14 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     @Override
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String targetUrl = determineTargetUrl(authentication);
-
+        String email = request.getParameter("email");
         if (response.isCommitted()) {
             System.out.println("Can't redirect");
             return;
         }
-
+        Cookie cookie = new Cookie("setUser",email);
+        response.addCookie(cookie);
+        cookie.setMaxAge(24*60*60);
         redirectStrategy.sendRedirect(request, response, targetUrl);
     }
 
@@ -45,15 +48,24 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         if (isAdmin(roles)) {
             url = "/admin";
-        }else {
+        } else if (isUser(roles)) {
+            url = "/user";
+        } else {
             url = "/accessDenied";
         }
         return url;
     }
 
+    private boolean isUser(List<String> roles) {
+        if (roles.contains("USER")) {
+            return true;
+        }
+        return false;
+    }
+
 
     private boolean isAdmin(List<String> roles) {
-        if (roles.contains("ROLE_ADMIN")) {
+        if (roles.contains("ADMIN")) {
             return true;
         }
         return false;

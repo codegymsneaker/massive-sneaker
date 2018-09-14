@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.awt.*;
 import java.util.Optional;
 
 @Controller
@@ -47,14 +46,14 @@ public class ProductController {
             products = productService.findAll(pageable);
         }
 
-        ModelAndView modelAndView = new ModelAndView("product/manage-product");
+        ModelAndView modelAndView = new ModelAndView("manage/manage-product");
         modelAndView.addObject("products", products);
         return modelAndView;
     }
 
     @GetMapping("/products/create")
     public ModelAndView showCreateProductForm() {
-        ModelAndView modelAndView = new ModelAndView("/product/create");
+        ModelAndView modelAndView = new ModelAndView("manage/create");
         modelAndView.addObject("product", new Product());
         modelAndView.addObject("message", "create product successfully");
         return modelAndView;
@@ -76,7 +75,7 @@ public class ProductController {
     ) {
         Product product = productService.findById(id);
         if (product != null) {
-            ModelAndView modelAndView = new ModelAndView("/product/edit");
+            ModelAndView modelAndView = new ModelAndView("manage/edit");
             modelAndView.addObject("product", product);
             return modelAndView;
         } else {

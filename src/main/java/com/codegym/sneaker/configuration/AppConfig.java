@@ -1,15 +1,10 @@
 package com.codegym.sneaker.configuration;
 
-import com.codegym.sneaker.service.ProductService;
+import com.codegym.sneaker.service.*;
 import com.codegym.sneaker.formatter.BrandFormatter;
 import com.codegym.sneaker.formatter.CategoryFormatter;
-import com.codegym.sneaker.model.Category;
-import com.codegym.sneaker.service.BrandService;
-import com.codegym.sneaker.service.CategoryService;
 import com.codegym.sneaker.service.ProductService;
-import com.codegym.sneaker.service.impl.BrandServiceImpl;
-import com.codegym.sneaker.service.impl.CategoryServiceImpl;
-import com.codegym.sneaker.service.impl.ProductServiceImpl;
+import com.codegym.sneaker.service.impl.*;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -68,6 +63,16 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     @Bean
     public ProductService productService() {
         return new ProductServiceImpl();
+    }
+
+    @Bean
+    public RoleService roleService() {
+        return new RoleServiceImpl();
+    }
+
+    @Bean
+    public UserService userService() {
+        return new UserServiceImpl();
     }
 
     @Override
