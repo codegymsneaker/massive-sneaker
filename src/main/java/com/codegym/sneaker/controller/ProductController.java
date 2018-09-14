@@ -54,7 +54,8 @@ public class ProductController {
         } else {
             products = productService.findAll(pageable);
         }
-        ModelAndView modelAndView = new ModelAndView("product/list");
+
+        ModelAndView modelAndView = new ModelAndView("product/manage-product");
         modelAndView.addObject("products", products);
         return modelAndView;
     }
@@ -62,7 +63,8 @@ public class ProductController {
     @GetMapping("/create")
     public ModelAndView showCreateProductForm() {
         ModelAndView modelAndView = new ModelAndView("/product/create");
-        modelAndView.addObject("productForm", new ProductForm());
+        modelAndView.addObject("product", new Product());
+        modelAndView.addObject("message", "create product successfully");
         return modelAndView;
     }
 
@@ -117,8 +119,8 @@ public class ProductController {
 
         ModelAndView modelAndView;
         if (product != null) {
-            modelAndView = new ModelAndView("/product/edit");
-            modelAndView.addObject("productForm", productForm);
+            ModelAndView modelAndView = new ModelAndView("/product/edit");
+            modelAndView.addObject("product", product);
             return modelAndView;
         } else {
             modelAndView = new ModelAndView("/product/error-404");

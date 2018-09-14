@@ -1,15 +1,15 @@
 package com.codegym.sneaker.configuration;
 
+import com.codegym.sneaker.service.*;
 import com.codegym.sneaker.formatter.BrandFormatter;
 import com.codegym.sneaker.formatter.CategoryFormatter;
-
+import com.codegym.sneaker.model.Category;
 import com.codegym.sneaker.service.BrandService;
 import com.codegym.sneaker.service.CategoryService;
 import com.codegym.sneaker.service.ProductService;
 import com.codegym.sneaker.service.impl.BrandServiceImpl;
 import com.codegym.sneaker.service.impl.CategoryServiceImpl;
 import com.codegym.sneaker.service.impl.ProductServiceImpl;
-import com.codegym.sneaker.utils.StorageUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -48,13 +48,12 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-
 @Configuration
+@ComponentScan("com.codegym")
 @EnableWebMvc
 @EnableTransactionManagement
 @ComponentScan("com.codegym.sneaker")
 @EnableJpaRepositories("com.codegym.sneaker.repository")
-@PropertySource("classpath:database.properties")
 @EnableSpringDataWebSupport
 public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
@@ -80,12 +79,21 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     public AppConfig(Environment environment) {
         this.environment = environment;
     }
+    @Bean
+    public RoleService roleService() {
+        return new RoleServiceImpl();
+    }
 
+    @Bean
+    public UserService userService() {
+        return new UserServiceImpl();
+    }
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addFormatter(new CategoryFormatter(applicationContext.getBean(CategoryService.class)));
         registry.addFormatter(new BrandFormatter(applicationContext.getBean(BrandService.class)));
+
     }
 
 
@@ -197,6 +205,6 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     public BrandService brandService() {
         return new BrandServiceImpl();
     }
-
+//
 
 }
