@@ -17,6 +17,9 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private BrandService brandService;
+
     @GetMapping("/categories")
     public ModelAndView listCategories() {
         Iterable<Category> categories = categoryService.findAll();
@@ -81,14 +84,4 @@ public class CategoryController {
         categoryService.remove(category.getId());
         return "redirect:categories";
     }
-
-    //    Code them phan gan danh sach brand vao category
-
-    @Autowired
-    private BrandService brandService;
-    @ModelAttribute("brands")
-    public Iterable<Brand> brands() {
-        return brandService.findAll();
-    }
-
 }

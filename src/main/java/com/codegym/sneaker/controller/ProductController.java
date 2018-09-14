@@ -22,8 +22,10 @@ import java.util.Optional;
 public class ProductController {
     @Autowired
     private ProductService productService;
+
     @Autowired
     private CategoryService categoryService;
+
     @Autowired
     private BrandService brandService;
 

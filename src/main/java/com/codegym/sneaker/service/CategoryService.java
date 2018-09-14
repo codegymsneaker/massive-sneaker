@@ -12,6 +12,4 @@ public interface CategoryService {
     void save(Category category);
 
     void remove(Long id);
-
-//    Page<Category> findAll(Pageable pageable);
 }
