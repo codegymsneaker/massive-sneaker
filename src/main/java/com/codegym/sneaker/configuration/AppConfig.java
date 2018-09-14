@@ -3,7 +3,6 @@ package com.codegym.sneaker.configuration;
 import com.codegym.sneaker.formatter.BrandFormatter;
 import com.codegym.sneaker.formatter.CategoryFormatter;
 
-import com.codegym.sneaker.formatter.ProductFormatter;
 import com.codegym.sneaker.service.BrandService;
 import com.codegym.sneaker.service.CategoryService;
 import com.codegym.sneaker.service.ProductService;
@@ -87,7 +86,6 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     public void addFormatters(FormatterRegistry registry) {
         registry.addFormatter(new CategoryFormatter(applicationContext.getBean(CategoryService.class)));
         registry.addFormatter(new BrandFormatter(applicationContext.getBean(BrandService.class)));
-        registry.addFormatter(new ProductFormatter(applicationContext.getBean(ProductService.class)));
     }
 
 

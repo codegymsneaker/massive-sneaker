@@ -30,5 +30,4 @@ public class CategoryServiceImpl implements CategoryService {
     public void remove(Long id) {
         categoryRepository.delete(id);
     }
-
 }

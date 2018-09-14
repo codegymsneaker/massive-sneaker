@@ -52,4 +52,9 @@ public class Category implements Serializable {
     public String toString() {
         return this.name;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return ((Category)obj).getId().equals(this.id);
+    }
 }

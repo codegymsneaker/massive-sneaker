@@ -23,12 +23,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product findById(Long id) {
-        return productRepository.findOne(id);
+        Product product = productRepository.findOne(id);
+        if (product != null) {
+            Hibernate.initialize(product.getCategories());
+        }
+        return product;
     }
 
     @Override
     public void save(Product product) {
-
         List<Category> categories = new ArrayList<>();
         for (Category category : product.getCategories()) {
             categories.add(categoryRepository.findOne(category.getId()));
@@ -40,7 +43,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void remove(Long id) {
-        productRepository.delete(id);
+        Product product = productRepository.findOne(id);
+        product.getCategories().removeAll(product.getCategories());
+        productRepository.delete(product);
     }
 
     @Override
@@ -62,6 +67,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> findAllByName(String name, Pageable pageable) {
-        return productRepository.findAllByName(name, pageable);
+        Page<Product> products = productRepository.findAllByName(name, pageable);
+        products.forEach(product -> Hibernate.initialize(product.getCategories()));
+        return products;
     }
 }

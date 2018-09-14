@@ -88,7 +88,4 @@ public class BrandController {
     public Iterable<Category> categories() {
         return categoryService.findAll();
     }
-
-
-
 }

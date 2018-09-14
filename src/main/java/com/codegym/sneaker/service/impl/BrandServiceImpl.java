@@ -30,5 +30,4 @@ public class BrandServiceImpl implements BrandService {
     public void remove(Long id) {
         brandRepository.delete(id);
     }
-
 }

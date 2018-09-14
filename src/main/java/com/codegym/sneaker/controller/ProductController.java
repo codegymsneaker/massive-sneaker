@@ -8,8 +8,6 @@ import com.codegym.sneaker.service.BrandService;
 import com.codegym.sneaker.service.CategoryService;
 import com.codegym.sneaker.service.ProductService;
 import com.codegym.sneaker.utils.StorageUtils;
-import org.hibernate.Hibernate;
-import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +21,7 @@ import java.io.IOException;
 import java.util.*;
 
 @Controller
+@RequestMapping("/admin")
 public class ProductController {
     @Autowired
     private ProductService productService;
@@ -46,32 +45,30 @@ public class ProductController {
 
     @GetMapping("/products")
     public ModelAndView listProduct(
-            @RequestParam("s") Optional<String> s, Pageable pageable) {
+            @RequestParam("s") Optional<String> s,
+            Pageable pageable
+    ) {
         Page<Product> products;
         if (s.isPresent()) {
             products = productService.findAllByName(s.get(), pageable);
         } else {
             products = productService.findAll(pageable);
         }
-        for (Product product : products) {
-            product.getCategories();
-        }
         ModelAndView modelAndView = new ModelAndView("product/list");
         modelAndView.addObject("products", products);
         return modelAndView;
     }
 
-    @GetMapping("/products/create")
+    @GetMapping("/create")
     public ModelAndView showCreateProductForm() {
         ModelAndView modelAndView = new ModelAndView("/product/create");
         modelAndView.addObject("productForm", new ProductForm());
         return modelAndView;
     }
 
-    @PostMapping("/products/create")
+    @PostMapping("/create")
     public ModelAndView saveProduct(
-            @ModelAttribute("productForm") ProductForm productForm,
-            RedirectAttributes redirectAttributes
+            @ModelAttribute("productForm") ProductForm productForm
     ) {
         ModelAndView modelAndView = new ModelAndView("/product/create");
         try {
@@ -96,76 +93,116 @@ public class ProductController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-//        productService.save(product);
-//        redirectAttributes.addFlashAttribute("message", "New create product successfully");
-//        return "redirect:/product";
-        modelAndView.addObject("formPost", new ProductForm());
-        modelAndView.addObject("message", "create blog successfully");
+        modelAndView.addObject("productForm", new ProductForm());
+        modelAndView.addObject("message", "New product has been created successfully");
         return modelAndView;
     }
 
-    @GetMapping("/products/edit/{id}")
+    @GetMapping("/edit/{id}")
     public ModelAndView showEditProductForm(
             @PathVariable("id") Long id
     ) {
         Product product = productService.findById(id);
+        ProductForm productForm = new ProductForm();
+
+        productForm.setId(product.getId());
+        productForm.setCode(product.getCode());
+        productForm.setName(product.getName());
+        productForm.setSize(product.getSize());
+        productForm.setQuantity(product.getQuantity());
+        productForm.setPrice(product.getPrice());
+        productForm.setImageUrl(product.getImage());
+        productForm.setBrand(product.getBrand());
+        productForm.setCategories(product.getCategories());
+
+        ModelAndView modelAndView;
         if (product != null) {
-            ModelAndView modelAndView = new ModelAndView("/product/edit");
-            modelAndView.addObject("product", product);
+            modelAndView = new ModelAndView("/product/edit");
+            modelAndView.addObject("productForm", productForm);
             return modelAndView;
         } else {
-            ModelAndView modelAndView = new ModelAndView("/product/error-404");
+            modelAndView = new ModelAndView("/product/error-404");
             return modelAndView;
         }
     }
 
-    @PostMapping("/edit/product")
-    public String updateProduct(
-            @ModelAttribute("product") Product product,
-            RedirectAttributes redirectAttributes
+    @PostMapping("/edit/{id}")
+    public ModelAndView updateProduct(
+            @ModelAttribute("productForm") ProductForm productForm,
+            @PathVariable("id") Long id
     ) {
+        ModelAndView modelAndView = new ModelAndView("/product/edit");
+        Product product = productService.findById(id);
+
+        if (!productForm.getImage().isEmpty()) {
+            StorageUtils.removeFeature(product.getImage());
+            String randomCode = UUID.randomUUID().toString();
+            String originFileName = productForm.getImage().getOriginalFilename();
+            String randomName = randomCode + StorageUtils.getFileExtension(originFileName);
+            try {
+                productForm.getImage().transferTo(new File(StorageUtils.FEATURE_LOCATION + "/" + randomName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            product.setImage(randomName);
+            productForm.setImageUrl(randomName);
+        }
+        product.setCode(productForm.getCode());
+        product.setName(productForm.getName());
+        product.setSize(productForm.getSize());
+        product.setQuantity(productForm.getQuantity());
+        product.setBrand(productForm.getBrand());
+        product.setPrice(productForm.getPrice());
+        product.setCategories(productForm.getCategories());
+
         productService.save(product);
-        redirectAttributes.addFlashAttribute("message", "update product successfully");
-        return "redirect:/product";
+        modelAndView.addObject("productForm", productForm);
+        modelAndView.addObject("message", "This product has been up to date successfully");
+        return modelAndView;
     }
 
-    @GetMapping("/products/delete/{id}")
+    @GetMapping("/delete/{id}")
     public ModelAndView showDeleteProductForm(
             @PathVariable("id") Long id
     ) {
         Product product = productService.findById(id);
+        ModelAndView modelAndView;
         if (product != null) {
-            ModelAndView modelAndView = new ModelAndView("/product/delete");
+            modelAndView = new ModelAndView("/product/delete");
             modelAndView.addObject("product", product);
-            return modelAndView;
         } else {
-            ModelAndView modelAndView = new ModelAndView("/product/error-404");
-            return modelAndView;
+            modelAndView = new ModelAndView("/product/error-404");
+        }
+        return modelAndView;
+    }
+
+    @PostMapping("/delete/{id}")
+    public String removeProduct(
+            @PathVariable("id") Long id,
+            RedirectAttributes redirectAttributes
+    ) {
+        Product product = productService.findById(id);
+        if (product != null) {
+            productService.remove(id);
+            redirectAttributes.addFlashAttribute("message", "Product has been deleted successfully");
+            return "redirect:/admin/products";
+        } else {
+            return "/product/error-404";
         }
     }
 
-    @PostMapping("/delete/product")
-    public String removeProduct(
-            @ModelAttribute("product") Product product,
-            RedirectAttributes redirectAttributes
-    ) {
-        productService.remove(product.getId());
-        redirectAttributes.addFlashAttribute("message", "remove product successfully");
-        return "redirect:/product";
-    }
-
-    @GetMapping("/products/view/{id}")
+    @GetMapping("/view/{id}")
     public ModelAndView showViewProductForm(
             @PathVariable("id") Long id
     ) {
         Product product = productService.findById(id);
+        ModelAndView modelAndView;
         if (product != null) {
-            ModelAndView modelAndView = new ModelAndView("/product/view");
+            modelAndView = new ModelAndView("/product/view");
             modelAndView.addObject("products", product);
             return modelAndView;
         } else {
-            ModelAndView modelAndView = new ModelAndView("redirect:/product");
+            modelAndView = new ModelAndView("redirect:/admin/products");
             return modelAndView;
         }
     }
