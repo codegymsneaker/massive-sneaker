@@ -2,7 +2,6 @@ package com.codegym.sneaker.configuration;
 
 import com.codegym.sneaker.formatter.BrandFormatter;
 import com.codegym.sneaker.formatter.CategoryFormatter;
-
 import com.codegym.sneaker.service.BrandService;
 import com.codegym.sneaker.service.CategoryService;
 import com.codegym.sneaker.service.ProductService;
@@ -42,12 +41,10 @@ import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
-
 
 @Configuration
 @EnableWebMvc
@@ -81,26 +78,22 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         this.environment = environment;
     }
 
-
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addFormatter(new CategoryFormatter(applicationContext.getBean(CategoryService.class)));
         registry.addFormatter(new BrandFormatter(applicationContext.getBean(BrandService.class)));
     }
 
-
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
-
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         return bCryptPasswordEncoder;
     }
-
 
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
@@ -139,7 +132,6 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
         em.setPackagesToScan("com.codegym.sneaker.model");
-
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         em.setJpaProperties(additionalProperties());
@@ -187,7 +179,6 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         return multipartResolver;
     }
 
-    //{Nghiem} them bean 2 service category,brand
     @Bean
     public CategoryService categoryService() {
         return new CategoryServiceImpl();
@@ -197,6 +188,4 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     public BrandService brandService() {
         return new BrandServiceImpl();
     }
-
-
 }
