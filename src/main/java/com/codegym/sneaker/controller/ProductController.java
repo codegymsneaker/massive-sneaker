@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/manage")
 public class ProductController {
     @Autowired
     private ProductService productService;
@@ -51,25 +52,26 @@ public class ProductController {
         return modelAndView;
     }
 
-    @GetMapping("/products/create")
-    public ModelAndView showCreateProductForm() {
-        ModelAndView modelAndView = new ModelAndView("manage/create");
-        modelAndView.addObject("product", new Product());
-        modelAndView.addObject("message", "create product successfully");
-        return modelAndView;
-    }
 
-    @PostMapping("/products/create")
-    public String saveProduct(
-            @ModelAttribute("product") Product product,
-            RedirectAttributes redirectAttributes
-    ) {
-        productService.save(product);
-        redirectAttributes.addFlashAttribute("message", "New create product successfully");
-        return "redirect:/product";
-    }
+//    @GetMapping("/create")
+//    public ModelAndView showCreateProductForm() {
+//        ModelAndView modelAndView = new ModelAndView("manage/create");
+//        modelAndView.addObject("product", new Product());
+//        modelAndView.addObject("message", "create product successfully");
+//        return modelAndView;
+//    }
+//
+//    @PostMapping("/create")
+//    public String saveProduct(
+//            @ModelAttribute("product") Product product,
+//            RedirectAttributes redirectAttributes
+//    ) {
+//        productService.save(product);
+//        redirectAttributes.addFlashAttribute("message", "New create product successfully");
+//        return "redirect:/manage/manage-product";
+//    }
 
-    @GetMapping("/products/edit/{id}")
+    @GetMapping("/edit/{id}")
     public ModelAndView showEditProductForm(
             @PathVariable("id") Long id
     ) {
@@ -79,7 +81,7 @@ public class ProductController {
             modelAndView.addObject("product", product);
             return modelAndView;
         } else {
-            ModelAndView modelAndView = new ModelAndView("/product/error-404");
+            ModelAndView modelAndView = new ModelAndView("error_404");
             return modelAndView;
         }
     }
@@ -94,20 +96,19 @@ public class ProductController {
         return "redirect:/product";
     }
 
-    @RequestMapping(value = "/products/delete{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-
+    @RequestMapping(value = "/delete{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public void deleteProduct(@PathVariable Long id) {
         productService.remove(id);
     }
 
-    @GetMapping("/products/view/{id}")
+    @GetMapping("/view/{id}")
     public ModelAndView showViewProductForm(
             @PathVariable("id") Long id
     ) {
         Product product = productService.findById(id);
         if (product != null) {
-            ModelAndView modelAndView = new ModelAndView("/product/view");
+            ModelAndView modelAndView = new ModelAndView("/view");
             modelAndView.addObject("products", product);
             return modelAndView;
         } else {
@@ -115,12 +116,4 @@ public class ProductController {
             return modelAndView;
         }
     }
-
-//    @RequestMapping("/search")
-//    public @ResponseBody List searchPost(@RequestParameter("term") String query) {
-//
-//        List<Object> retVal = getListOfObjectFromDbBasedOnQuery(query);
-//
-//        return retVal;
-//    }
 }

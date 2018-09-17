@@ -5,8 +5,10 @@ import com.codegym.sneaker.model.User;
 import com.codegym.sneaker.service.RoleService;
 import com.codegym.sneaker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.nio.file.spi.FileSystemProvider;
 
 
 @Controller
@@ -74,8 +77,9 @@ public class UserController {
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String adminPage(ModelMap model) {
         model.addAttribute("user", getPrincipal());
-        return "redirect:/manage";
+        return "/manage/manage-product";
     }
+
     @RequestMapping("/login")
     public String Index(@CookieValue(value = "setUser", defaultValue = "") String setUser, Model model) {
         Cookie cookie = new Cookie("setUser", setUser);
@@ -83,40 +87,13 @@ public class UserController {
         return "/login";
     }
 
-    @PostMapping("/login")
-    public String doLogin(@ModelAttribute("user") User user, Model model, @CookieValue(value = "setUser", defaultValue = "") String setUser,
-                          HttpServletResponse response, HttpServletRequest request) {
-
-        if (user.getEmail().equals(user.getEmail()) && user.getPassword().equals(user.getPassword())) {
-            if (user.getEmail() != null)
-                setUser = user.getEmail();
-
-            Cookie cookie = new Cookie("setUser", setUser);
-            cookie.setMaxAge(24 * 60 * 60);
-            response.addCookie(cookie);
-
-
-            Cookie[] cookies = request.getCookies();
-
-            for (Cookie ck : cookies) {
-
-                if (ck.getName().equals("setUser")) {
-                    model.addAttribute("cookieValue", ck);
-                    break;
-                } else {
-                    ck.setValue("");
-                    model.addAttribute("cookieValue", ck);
-                    break;
-                }
-            }
-            model.addAttribute("message", "Login success. Welcome ");
-        } else {
-            user.setEmail("");
-            Cookie cookie = new Cookie("setUser", setUser);
-            model.addAttribute("cookieValue", cookie);
-            model.addAttribute("message", "Login failed! Try again.");
+    @RequestMapping(value="/logout", method = RequestMethod.GET)
+    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null){
+            new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return "/home";
+        return "redirect:/login?logout";
     }
 
     @RequestMapping(value = "/access_denied", method = RequestMethod.GET)
