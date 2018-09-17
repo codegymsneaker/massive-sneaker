@@ -11,11 +11,13 @@ import com.codegym.sneaker.utils.StorageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -55,16 +57,15 @@ public class ProductController {
             products = productService.findAll(pageable);
         }
 
-        ModelAndView modelAndView = new ModelAndView("product/manage-product");
+        ModelAndView modelAndView = new ModelAndView("/manage/manage-product");
         modelAndView.addObject("products", products);
         return modelAndView;
     }
 
     @GetMapping("/create")
     public ModelAndView showCreateProductForm() {
-        ModelAndView modelAndView = new ModelAndView("/product/create");
-        modelAndView.addObject("product", new Product());
-        modelAndView.addObject("message", "create product successfully");
+        ModelAndView modelAndView = new ModelAndView("/manage/create");
+        modelAndView.addObject("productForm", new ProductForm());
         return modelAndView;
     }
 
@@ -72,7 +73,7 @@ public class ProductController {
     public ModelAndView saveProduct(
             @ModelAttribute("productForm") ProductForm productForm
     ) {
-        ModelAndView modelAndView = new ModelAndView("/product/create");
+        ModelAndView modelAndView = new ModelAndView("/manage/create");
         try {
             String randomCode = UUID.randomUUID().toString();
             String originFileName = productForm.getImage().getOriginalFilename();
@@ -86,12 +87,12 @@ public class ProductController {
             product.setQuantity(productForm.getQuantity());
             product.setBrand(productForm.getBrand());
             product.setPrice(productForm.getPrice());
-
             product.setCategories(productForm.getCategories());
-
             product.setImage(randomName);
-            productService.save(product);
 
+            productService.save(product);
+            product.setCode("SNK" + product.getId());
+            productService.save(product);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -119,11 +120,11 @@ public class ProductController {
 
         ModelAndView modelAndView;
         if (product != null) {
-            ModelAndView modelAndView = new ModelAndView("/product/edit");
-            modelAndView.addObject("product", product);
+            modelAndView = new ModelAndView("/manage/edit");
+            modelAndView.addObject("productForm", productForm);
             return modelAndView;
         } else {
-            modelAndView = new ModelAndView("/product/error-404");
+            modelAndView = new ModelAndView("/manage/error-404");
             return modelAndView;
         }
     }
@@ -133,7 +134,7 @@ public class ProductController {
             @ModelAttribute("productForm") ProductForm productForm,
             @PathVariable("id") Long id
     ) {
-        ModelAndView modelAndView = new ModelAndView("/product/edit");
+        ModelAndView modelAndView = new ModelAndView("/manage/edit");
         Product product = productService.findById(id);
 
         if (!productForm.getImage().isEmpty()) {
@@ -158,6 +159,8 @@ public class ProductController {
         product.setCategories(productForm.getCategories());
 
         productService.save(product);
+        product.setCode("SNK" + product.getId());
+        productService.save(product);
         modelAndView.addObject("productForm", productForm);
         modelAndView.addObject("message", "This product has been up to date successfully");
         return modelAndView;
@@ -170,7 +173,7 @@ public class ProductController {
         Product product = productService.findById(id);
         ModelAndView modelAndView;
         if (product != null) {
-            modelAndView = new ModelAndView("/product/delete");
+            modelAndView = new ModelAndView("/manage/delete");
             modelAndView.addObject("product", product);
         } else {
             modelAndView = new ModelAndView("/product/error-404");
@@ -193,6 +196,7 @@ public class ProductController {
         }
     }
 
+
     @GetMapping("/view/{id}")
     public ModelAndView showViewProductForm(
             @PathVariable("id") Long id
@@ -200,7 +204,7 @@ public class ProductController {
         Product product = productService.findById(id);
         ModelAndView modelAndView;
         if (product != null) {
-            modelAndView = new ModelAndView("/product/view");
+            modelAndView = new ModelAndView("/manage/view");
             modelAndView.addObject("products", product);
             return modelAndView;
         } else {

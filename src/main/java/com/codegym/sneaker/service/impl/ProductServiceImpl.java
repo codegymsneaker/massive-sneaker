@@ -52,6 +52,7 @@ public class ProductServiceImpl implements ProductService {
     public Page<Product> findAll(Pageable pageable) {
         Page<Product> products = productRepository.findAll(pageable);
         products.forEach(product -> Hibernate.initialize(product.getCategories()));
+        products.forEach(product -> Hibernate.initialize(product.getImage()));
         return products;
     }
 

@@ -6,8 +6,8 @@
     <title>Title</title>
 </head>
 <body>
-<form th:action="@{/delete/product}" method="post" th:object="${product}">
-    <input type="hidden" th:field="*{id}">
+<form th:action="@{/admin/delete/__${product.id}__/((${_csrf.parameterName})=(${_csrf.token}))}"
+      method="post" th:object="${product}" enctype="multipart/form-data">
     <table>
         <tr>
             <th>Product Code</th>
@@ -27,7 +27,9 @@
         </tr>
         <tr>
             <th>Thumbnail</th>
-            <td th:text="${product.image}"></td>
+            <td>
+                <img th:src="@{/features/__${product.getImage()}__}">
+            </td>
         </tr>
         <tr>
             <th>Price</th>
@@ -35,7 +37,9 @@
         </tr>
         <tr>
             <th>Name Category</th>
-            <td th:text="${product.category.name}"></td>
+            <td th:each="c : ${product.categories}">
+                <span th:text="${c.name}"></span>
+            </td>
         </tr>
         <tr>
             <td>Name Brand</td>

@@ -3,27 +3,42 @@
 <head th:replace="layout :: head"></head>
 <body>
 <div class="container">
-    <form th:object="${product}" action="/edit/product" method="post">
+    <form th:object="${productForm}"
+          th:action="@{/admin/edit/__${productForm.id}__/((${_csrf.parameterName})=(${_csrf.token}))}"
+          method="post" enctype="multipart/form-data">
+        <p>
+            <a th:href="@{/admin/products}">List Product</a>
+        </p>
         <h2>Edit product information</h2>
+        <p>
+        <h6 style="color: blue">
+            <th:block th:if="${message}">
+                <span th:text="${message}"></span>
+            </th:block>
+        </h6>
+        </p>
         <div class="form-group">
             <label>Name</label>
             <input class="form-control" th:field="*{name}"/>
         </div>
         <div class="form-group">
-            <label>Code</label>
-            <input class="form-control" th:field="*{code}">
-        </div>
-        <div class="form-group">
             <label>Brand</label>
             <select th:field="*{brand}" class="form-control">
-                <option th:each="brand:${brands}" th:value="${brand.id}" th:text="${brand.name}"></option>
+                <option th:each="brand:${brands}"
+                        th:value="${brand.id}"
+                        th:text="${brand.name}">
+                </option>
             </select>
         </div>
         <div class="form-group">
             <label>Category</label>
-            <select th:field="*{category}" class="form-control">
-                <option th:each="category:${categories}" th:value="${category.id}" th:text="${category.name}"></option>
-            </select>
+            <th:block th:each="c : ${categories}">
+                <input type="checkbox"
+                       th:checked="${#lists.contains(productForm.categories, c)}"
+                       name="categories"
+                       th:value="${c.id}"/>
+                <label th:text="${c.name}"></label>
+            </th:block>
         </div>
         <div class="form-group">
             <label>Size</label>
@@ -38,7 +53,9 @@
             <input class="form-control" th:field="*{quantity}">
 
             <label>Photo</label>
-            <input type="file" class="form-group" th:field="*{image}" placeholder="Choose file to upload">
+            <input type="hidden" class="form-group" th:field="*{image}" placeholder="Choose file to upload">
+            <img th:src="@{/features/__${productForm.imageUrl}__}" height="100" width="100">
+            <label><input type="file" th:field="*{image}" height="100" width="100"></label>
         </div>
         <div class="form-group">
             <button class="btn btn-primary" type="submit">Edit</button>

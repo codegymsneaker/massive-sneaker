@@ -31,4 +31,8 @@ dependencies {
 
 
     compile group: 'org.hibernate', name: 'hibernate-validator', version: '4.2.0.Final'
+
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.5'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.5'
+
 }

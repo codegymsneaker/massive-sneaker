@@ -6,46 +6,48 @@
     <title>Sneaker-ism</title>
     <link rel="stylesheet" href="../../../resource/bootstrap-4.1.3-dist/css/bootstrap.min.css"/>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var deleteLink = $("a:contains('Delete')");
-            $(deleteLink).bind('click', function() {
-                if (!confirm('Are you sure ?')) {
-                    return false;
-                } else {
-                    $.ajax({
-                        url: $(event.target).attr("href"),
-                        type: "POST",
-                        beforeSend: function (xhr) {
-                            xhr.setRequestHeader("Accept", "application/json");
-                            xhr.setRequestHeader("Content-Type", "application/json");
-                        },
-                        success: function (sneaker) {
-                            var respContent = "";
-                            var rowToDelete = $(event.target).closest("tr");
-                            rowToDelete.remove()    ;
-                            respContent += "<span class='success'>Product was deleted: [";
-                            respContent += sneaker.name + " : ";
-                            respContent += sneaker.code + " : "; "]</span>";
-                            $("#response").html(respContent);
-                        }
-                    });
-                    event.preventDefault();
-                }
-            });
+    <!--<script type="text/javascript">-->
+        <!--$(document).ready(function () {-->
+            <!--var deleteLink = $("a:contains('Delete')");-->
+            <!--$(deleteLink).click( function (event) {-->
+                <!--// if (!confirm('Are you sure ?')) {-->
+                <!--//     return false;-->
+                <!--// } else {-->
+                <!--$.ajax({-->
+                    <!--url: $(event.target).attr("href"),-->
+                    <!--type: "POST",-->
+                    <!--beforeSend: function (xhr) {-->
+                        <!--xhr.setRequestHeader("Accept", "application/json");-->
+                        <!--xhr.setRequestHeader("Content-Type", "application/json");-->
+                    <!--},-->
+                    <!--success: function (sneaker) {-->
+                        <!--var respContent = "";-->
+                        <!--var rowToDelete = $(event.target).closest("tr");-->
+                        <!--rowToDelete.remove();-->
+                        <!--respContent += "<span class='success'>Product was deleted: [";-->
+                        <!--respContent += sneaker.name + " : ";-->
+                        <!--respContent += sneaker.code + " : ";-->
+                        <!--"]</span>";-->
+                        <!--$("#response").html(respContent);-->
+                    <!--}-->
+                <!--});-->
+                <!--event.preventDefault();-->
+                <!--// }-->
+            <!--});-->
 
-        });
+        <!--});-->
 
-    </script>
-    <script>
-        function showSortedResult() {
+    <!--</script>-->
+    <!--<script>-->
+        <!--function showSortedResult() {-->
 
 
-        }
-    </script>
+        <!--}-->
+    <!--</script>-->
 
 </head>
 <body>
+
 <div class="container">
     <h2>SNEAKERISM INVENTORY</h2>
     <a th:href="@{/logout}">Log Out</a>
@@ -53,7 +55,7 @@
         <input name="s" type="text"/>
         <input type="submit" value="search">
     </form>
-    <a href="/products/create">Add new product</a>
+    <a href="/admin/create">Add new product</a>
     <div id="response"></div>
     <div id="sortBy">
         <select>
@@ -72,6 +74,8 @@
             <th>Stock</th>
             <th>Thumbnail</th>
             <th>Price</th>
+            <th>Brand</th>
+            <th>Categories</th>
             <th>Manage action</th>
         </tr>
         </thead>
@@ -82,19 +86,28 @@
                 <td th:text="${sneaker.name}"></td>
                 <td th:text="${sneaker.size}"></td>
                 <td th:text="${sneaker.quantity}"></td>
-                <td th:text="${sneaker.image}"></td>
-                <td th:text="${sneaker.price}"></td>
                 <td>
-                    <a th:href="@{/products/edit/__${sneaker.id}__}" title="Edit">Edit</a>
-                    <a th:href="@{/products/delete/__${sneaker.id}__}" title="delete">Delete</a>
+                    <img th:src="@{/features/__${sneaker.image}__}" height="100" width="100">
+                </td>
+                <td th:text="${sneaker.price}"></td>
+                <td th:text="${sneaker.brand.name}"></td>
+                <td>
+                    <span th:each="c : ${sneaker.categories}" th:text="${c.name + '&emsp;'}"></span>
+                </td>
+                <td>
+                    <a th:href="@{/admin/edit/__${sneaker.id}__}" title="Edit">Edit</a>
+                    <a th:href="@{/admin/delete/__${sneaker.id}__}" title="delete">Delete</a>
                 </td>
             </tr>
         </th:block>
-
         </tr>
         </tbody>
     </table>
 </div>
-
+<div>
+    <a th:href="@{'/admin/products'(page=${products.number - 1})}" th:if="${products.hasPrevious()}">Previous</a>
+    <span th:text="${products.number + 1}"></span>/<span th:text="${products.totalPages}"></span>
+    <a th:href="@{'/admin/products'(page=${products.number + 1})}" th:if="${products.hasNext()}">Next</a>
+</div>
 </body>
 </html>
