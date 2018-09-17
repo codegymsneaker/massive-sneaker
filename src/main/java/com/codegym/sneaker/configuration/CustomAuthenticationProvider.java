@@ -50,7 +50,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(email, password,
                 grantedAuthorities);
 
-        logger.info("Succesful Authentication with user = " + email);
+        logger.info("Successful Authentication with user = " + email);
         return auth;
     }
 

@@ -212,4 +212,12 @@ public class ProductController {
             return modelAndView;
         }
     }
+
+//    @RequestMapping("/search")
+//    public @ResponseBody List searchPost(@RequestParameter("term") String query) {
+//
+//        List<Object> retVal = getListOfObjectFromDbBasedOnQuery(query);
+//
+//        return retVal;
+//    }
 }
