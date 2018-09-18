@@ -23,5 +23,6 @@ public interface ProductService {
 
     Iterable<Product> findAllByBrand(Brand brand);
 
-    Page<Product> findAllByName(String name, Pageable pageable);
+    Page<Product> findAllByNameContainingOrCode(String name, String code, Pageable pageable);
+
 }

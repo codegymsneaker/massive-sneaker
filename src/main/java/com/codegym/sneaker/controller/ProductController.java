@@ -32,7 +32,6 @@ public class ProductController {
     @Autowired
     private BrandService brandService;
 
-
     @ModelAttribute("categories")
     public Iterable<Category> categories() {
         return categoryService.findAll();
@@ -50,7 +49,7 @@ public class ProductController {
     ) {
         Page<Product> products;
         if (s.isPresent()) {
-            products = productService.findAllByName(s.get(), pageable);
+            products = productService.findAllByNameContainingOrCode(s.get(), s.get(), pageable);
         } else {
             products = productService.findAll(pageable);
         }
@@ -210,12 +209,4 @@ public class ProductController {
             return modelAndView;
         }
     }
-
-//    @RequestMapping("/search")
-//    public @ResponseBody List searchPost(@RequestParameter("term") String query) {
-//
-//        List<Object> retVal = getListOfObjectFromDbBasedOnQuery(query);
-//
-//        return retVal;
-//    }
 }

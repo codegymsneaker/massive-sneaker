@@ -67,8 +67,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> findAllByName(String name, Pageable pageable) {
-        Page<Product> products = productRepository.findAllByName(name, pageable);
+    public Page<Product> findAllByNameContainingOrCode(String name, String code, Pageable pageable) {
+        Page<Product> products = productRepository.findAllByNameContainingOrCode(name, code, pageable);
         products.forEach(product -> Hibernate.initialize(product.getCategories()));
         return products;
     }

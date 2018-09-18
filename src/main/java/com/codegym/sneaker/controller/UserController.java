@@ -69,11 +69,6 @@ public class UserController {
         return modelAndView;
     }
 
-    @GetMapping("/")
-    public String home() {
-        return "home";
-    }
-
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String adminPage(ModelMap model) {
         model.addAttribute("user", getPrincipal());

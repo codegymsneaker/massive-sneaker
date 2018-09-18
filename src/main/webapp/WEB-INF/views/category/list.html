@@ -17,7 +17,6 @@
     <th:block th:each="category : ${categories}">
         <tr>
             <td th:text="${category.name}"></td>
-            <td th:text="${category.brands.}"></td>
             <td><a th:href="@{/edit-category/__${category.id}__ }">Edit</a></td>
             <td><a th:href="@{/delete-category/__${category.id}__ }">Delete</a></td>
         </tr>
