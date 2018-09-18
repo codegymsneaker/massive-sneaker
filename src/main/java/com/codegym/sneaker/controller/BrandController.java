@@ -17,6 +17,14 @@ public class BrandController {
     @Autowired
     private BrandService brandService;
 
+    @Autowired
+    private CategoryService categoryService;
+
+    @ModelAttribute("categories")
+    public Iterable<Category> categories() {
+        return categoryService.findAll();
+    }
+
     @GetMapping("/brands")
     public ModelAndView listBrand() {
         Iterable<Brand> brands = brandService.findAll();
@@ -80,12 +88,5 @@ public class BrandController {
     public String deleteBrand(@ModelAttribute("brand") Brand brand) {
         brandService.remove(brand.getId());
         return "redirect:brands";
-    }
-
-    @Autowired
-    private CategoryService categoryService;
-    @ModelAttribute("categories")
-    public Iterable<Category> categories() {
-        return categoryService.findAll();
     }
 }

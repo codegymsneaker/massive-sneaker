@@ -2,6 +2,7 @@ package com.codegym.sneaker.controller;
 
 
 import com.codegym.sneaker.model.Category;
+import com.codegym.sneaker.service.BrandService;
 import com.codegym.sneaker.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private BrandService brandService;
 
     @GetMapping("/categories")
     public ModelAndView listCategories() {
@@ -80,6 +84,4 @@ public class CategoryController {
         categoryService.remove(category.getId());
         return "redirect:categories";
     }
-
-
 }

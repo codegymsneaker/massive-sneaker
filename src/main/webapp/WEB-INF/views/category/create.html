@@ -12,7 +12,6 @@
 <th:block th:if="${message}">
     <p th:text="${message}"></p>
 </th:block>
-
 <form th:action="@{/create-category}" th:object="${category}" method="post">
     <table>
         <tr>
