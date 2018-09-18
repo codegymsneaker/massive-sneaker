@@ -1,0 +1,146 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    background-color: #fff;
+}
+
+.footer {
+    border-top: 1px solid #d0d0d0;
+    background: #f7f7f7;
+    padding: 65px 0 46px;
+}
+
+.footer .container {
+    max-width: 1191px;
+    margin: 0 auto;
+}
+
+.footer .title {
+    color: #363636;
+    display: block;
+    margin-top: 0;
+    margin-bottom: 17px;
+    font-size: 16px;
+}
+
+.footer .col {
+    float: left;
+}
+
+.footer .col-menu {
+    width: 50%;
+    padding-bottom: 42px;
+}
+
+.footer .col-menu .list {
+    float: left;
+    width: 50%;
+    padding-right: 40px;
+}
+
+.footer .col-support {
+    width: 25%;
+}
+
+.footer .col-connect {
+    width: 25%;
+}
+
+.footer .list {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.footer .list .item {
+
+}
+
+.footer .list .item + .item {
+    margin-top: 11px;
+}
+
+.footer .list .item a {
+    color: #363636;
+    text-decoration: none;
+}
+.footer .list .item a i {
+    margin-right: 8px;
+}
+
+.footer .list .item a:hover {
+    color: #1428a0;
+}
+
+.footer .copyright {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 12px;
+}
+
+.footer .social-list {
+    padding-left: 0;
+    margin-bottom: 0;
+    margin-left: -10px;
+}
+
+.footer .social-list li {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.footer .social-list li a {
+    display: block;
+    width: 45px;
+    height: 45px;
+    font-size: 26px;
+    font-weight: normal;
+    background: #363636;
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 47px;
+}
+
+.bottom-footer {
+    padding: 23px 0 12px;
+    background: #363636;
+}
+
+.bottom-footer .container {
+    max-width: 1191px;
+    margin: 0 auto;
+}
+
+.gb-footer__list {
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.gb-footer__item {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.gb-footer__item a {
+    font-size: 14px;
+    color: #fff;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.bottom-footer .introduction {
+    font-size: 12px;
+    font-weight: normal;
+    color: #a6a6a6;
+    line-height: 1.75;
+    word-break: break-word;
+}
